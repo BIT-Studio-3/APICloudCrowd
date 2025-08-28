@@ -1,29 +1,29 @@
 import prisma from "../prisma/client.js";
 
 const createUser = async (req, res) => {
-    try {
-        await prisma.user.create({
-            data: {
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                emailAddress: req.body.emailAddress,
-                dateOfBirth: req.body.dateOfBirth,
-                phoneNumber: req.body.phoneNumber
-            },
-        });
+  try {
+    await prisma.user.create({
+      data: {
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        emailAddress: req.body.emailAddress,
+        dateOfBirth: req.body.dateOfBirth,
+        phoneNumber: req.body.phoneNumber,
+      },
+    });
 
-        const newUsers = await prisma.user.findMany();
+    const newUsers = await prisma.user.findMany();
 
-        return res.status(201).json({
-            message: "User successfully created",
-            data: newUsers,
-        });
-    } catch (err) {
+    return res.status(201).json({
+      message: "User successfully created",
+      data: newUsers,
+    });
+  } catch (err) {
     return res.status(500).json({
       message: err.message,
     });
   }
-}
+};
 
 const getUsers = async (req, res) => {
   try {
@@ -31,7 +31,7 @@ const getUsers = async (req, res) => {
 
     // Check if there are no users
     if (!users) {
-      return res.status(404).json({ message: 'No users found' });
+      return res.status(404).json({ message: "No users found" });
     }
 
     return res.status(200).json({
@@ -84,14 +84,13 @@ const updateUser = async (req, res) => {
     // Update the user
     user = await prisma.user.update({
       where: { id: req.params.id },
-      data: 
-      {
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                emailAddress: req.body.emailAddress,
-                dateOfBirth: req.body.dateOfBirth,
-                phoneNumber: req.body.phoneNumber
-            },
+      data: {
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        emailAddress: req.body.emailAddress,
+        dateOfBirth: req.body.dateOfBirth,
+        phoneNumber: req.body.phoneNumber,
+      },
     });
 
     return res.status(200).json({
@@ -131,10 +130,4 @@ const deleteUser = async (req, res) => {
   }
 };
 
-export {
-  createUser,
-  getUsers,
-  getUser,
-  updateUser,
-  deleteUser,
-};
+export { createUser, getUsers, getUser, updateUser, deleteUser };

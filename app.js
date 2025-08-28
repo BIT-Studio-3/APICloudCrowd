@@ -1,8 +1,8 @@
 // Import the Express module
-import express from 'express';
+import express from "express";
 
 // Import the routes modules
-import userRoutes from './routes/user.js'
+import userRoutes from "./routes/user.js";
 
 // Create an Express application
 const app = express();
@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: false })); // To parse the incoming requests with urlencoded payloads. For example, form data
 app.use(express.json()); // To parse the incoming requests with JSON payloads. For example, REST API requests
 
-app.use('/api/users', userRoutes);
+app.use("/api/users", userRoutes);
 
 // Start the server on port 3000
 app.listen(PORT, () => {
