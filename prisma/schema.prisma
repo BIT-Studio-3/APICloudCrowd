@@ -17,7 +17,7 @@ model User {
   id              String      @id @default(uuid())
   firstName       String
   lastName        String
-  dateOfBirth     DateTime
+  dateOfBirth     DateTime    @db.Date
   emailAddress    String      @unique
   phoneNumber     String?     @unique
   createdAt       DateTime    @default(now())
