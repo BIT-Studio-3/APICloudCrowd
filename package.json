@@ -12,17 +12,18 @@
     "docker:run": "docker run --name id607001-db-dev -e POSTGRES_PASSWORD=HelloWorld123 -p 5432:5432 -d postgres",
     "setup:env": "copy .env.example .env"
   },
+  "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
-    "@prisma/client": "^6.14.0",
+    "@prisma/client": "^6.15.0",
     "express": "^5.1.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.10",
     "prettier": "3.6.2",
-    "prisma": "^6.14.0"
-  }
+    "prisma": "^6.15.0"
+  },
+  "description": ""
 }
