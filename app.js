@@ -3,6 +3,7 @@ import express from "express";
 
 // Import the routes modules
 import userRoutes from "./routes/user.js";
+import authRoutes from "./routes/auth.js";
 
 // Create an Express application
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.urlencoded({ extended: false })); // To parse the incoming reque
 app.use(express.json()); // To parse the incoming requests with JSON payloads. For example, REST API requests
 
 app.use("/api/users", userRoutes);
+app.use("/api/auth", authRoutes);
 
 // Start the server on port 3000
 app.listen(PORT, () => {
