@@ -57,3 +57,45 @@ const register = async (req, res) => {
     }
 };
 
+const login = async (req, res) => {
+    try {
+        const emailAddress = req.body.emailAddress;
+        const password = req.body.password;
+
+        // Find user by email
+        const user = await prisma.user.findUnique({
+            where: { emailAddress }
+        });
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid email address' });
+        }
+
+        // Compare the provided password with the hashed password in the database
+        const isPassword = await bcryptjs.compare(password, user.password);
+        if (!isPassword) {
+            return res.status(400).json({ message: 'Invalid password' });
+        }
+
+        const { JWT_SECRET, JWT_LIFETIME } = process.env;
+
+        const token = jwt.sign(
+            {
+                id: user.id,
+                role: user.role,
+                emailAddress: user.emailAddress,
+            },
+            JWT_SECRET,
+            { expiresIn: JWT_LIFETIME }     
+        );
+
+        return res.status(200).json({
+            message: err.message,
+        });
+    }catch(err) {
+        return res.status(500)({
+            message: err.message,
+        })
+    }
+};
+
+export { register, login };
