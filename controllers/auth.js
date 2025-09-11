@@ -1,0 +1,59 @@
+import bcryptjs from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+
+import prisma from '../prisma/client.js';
+
+const register = async (req, res) => {
+    try{
+        const firstName = req.body.firstName;
+        const lastName = req.body.lastName;
+        const emailAddress = req.body.emailAddress;
+        const password = req.body.password;
+        const role = req.body.role || 'USER';
+
+        // Check if user already exists by email address
+        let user = await prisma.user.findUnique({
+            where: { emailAddress }
+        });
+
+        if (user) {
+            return res.status(400).json({ message: 'User already exists' });
+        }
+
+        // Generate a random salt to make the password hash unique
+        const salt = await bcryptjs.genSalt();
+
+        // Hash the password with the salt
+        const hashedPassword = await bcryptjs.hash(password, salt);
+
+        // Create a new user with the hashed password
+        user = await prisma.user.create({
+            data: {
+                firstName,
+                lastName,
+                emailAddress,
+                password: hashedPassword,
+                role,
+            },
+            select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                emailAddress: true,
+                role: true,
+                createdAt: true,
+                updatedAt: true,
+            },
+        });
+
+        return res.status(201).json({ 
+            message: 'User registered successfully', 
+            data: user, 
+        }); 
+    } catch(err) {
+        return res.status(500).json({
+            message: err.message,
+        });
+    }
+};
+
