@@ -9,6 +9,7 @@ const register = async (req, res) => {
         const lastName = req.body.lastName;
         const emailAddress = req.body.emailAddress;
         const password = req.body.password;
+        const dateOfBirth = new Date(req.body.dateOfBirth);
         const role = req.body.role || 'USER';
 
         // Check if user already exists by email address
@@ -32,6 +33,7 @@ const register = async (req, res) => {
                 firstName,
                 lastName,
                 emailAddress,
+                dateOfBirth,
                 password: hashedPassword,
                 role,
             },
@@ -40,6 +42,7 @@ const register = async (req, res) => {
                 firstName: true,
                 lastName: true,
                 emailAddress: true,
+                dateOfBirth: true,
                 role: true,
                 createdAt: true,
                 updatedAt: true,
