@@ -1,5 +1,6 @@
 // Import the Express module
 import express from "express";
+import cors from "cors";
 
 // Import the routes modules
 import userRoutes from "./routes/user.js";
@@ -11,6 +12,7 @@ const app = express();
 // Use the PORT environment variable or 3000
 const PORT = process.env.PORT || 3000;
 
+app.use(cors({ origin: "http://localhost:5173" }))
 app.use(express.urlencoded({ extended: false })); // To parse the incoming requests with urlencoded payloads. For example, form data
 app.use(express.json()); // To parse the incoming requests with JSON payloads. For example, REST API requests
 
