@@ -16,8 +16,8 @@ app.use(cors({ origin: "http://localhost:5173" }))
 app.use(express.urlencoded({ extended: false })); // To parse the incoming requests with urlencoded payloads. For example, form data
 app.use(express.json()); // To parse the incoming requests with JSON payloads. For example, REST API requests
 
-app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
 
 // Start the server on port 3000
 app.listen(PORT, () => {
