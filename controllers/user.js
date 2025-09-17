@@ -7,8 +7,10 @@ const createUser = async (req, res) => {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         emailAddress: req.body.emailAddress,
-        dateOfBirth: req.body.dateOfBirth,
+        dateOfBirth: new Date(req.body.dateOfBirth),
+        password: req.body.password,
         phoneNumber: req.body.phoneNumber,
+        role: req.body.role,
       },
     });
 
