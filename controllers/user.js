@@ -10,6 +10,7 @@ const createUser = async (req, res) => {
         dateOfBirth: new Date(req.body.dateOfBirth),
         password: req.body.password,
         phoneNumber: req.body.phoneNumber,
+        role: req.body.role,
       },
     });
 
