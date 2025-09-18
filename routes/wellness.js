@@ -1,7 +1,7 @@
-// routes/wellness.js
-const express = require('express');
+import express from 'express';
+import { createWellness, getAllWellness } from '../controllers/wellness.js';
+
 const router = express.Router();
-const { createWellness, getAllWellness } = require('../controllers/wellnessController');
 
 // POST /api/wellness - Create new wellness entry
 router.post('/', createWellness);
@@ -9,4 +9,4 @@ router.post('/', createWellness);
 // GET /api/wellness - Get all wellness entries (optional)
 router.get('/', getAllWellness);
 
-module.exports = router;
+export default router;
