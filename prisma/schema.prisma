@@ -32,12 +32,12 @@ model User {
 }
 
 model Wellness {
-  id                   Int      @id @default(autoincrement())
-  sleepHours           Int
-  stress               Int
-  fatigue              Int
-  muscleSoreness       Int?
-  timeStamp            DateTime @default(now())
+  id              Int      @id @default(autoincrement())
+  sleep           Int
+  stress          Int
+  fatigue         Int
+  muscleSoreness  Int?
+  timeStamp       DateTime @default(now())
   // Remove the relation fields to avoid breaking User model
   // userId          String?  // Remove this
   // user            User?    // Remove this
