@@ -9,6 +9,8 @@ import authRoutes from "./routes/auth.js";
 // Create an Express application
 const app = express();
 
+const wellnessRoutes = require('./routes/wellness');
+
 // Use the PORT environment variable or 3000
 const PORT = process.env.PORT || 3000;
 
@@ -18,6 +20,7 @@ app.use(express.json()); // To parse the incoming requests with JSON payloads. F
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use('/api/wellness', wellnessRoutes);
 
 // Start the server on port 3000
 app.listen(PORT, () => {
