@@ -4,7 +4,7 @@ CREATE TABLE "public"."Wellness" (
     "sleep" INTEGER NOT NULL,
     "stress" INTEGER NOT NULL,
     "fatigue" INTEGER NOT NULL,
-    "muscleSoreness" INTEGER,
+    "muscleSoreness" INTEGER NOT NULL,
     "timeStamp" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Wellness_pkey" PRIMARY KEY ("id")
