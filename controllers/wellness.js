@@ -1,38 +1,40 @@
 // controllers/wellnessController.js
 const prisma = require('../prisma/client');
 
-exports.createWellness = async (req, res) => {
+export const createWellness = async (req, res) => {
   try {
-    // Extract data from request body
-    const { sleep, stress, fatigue, muscleSoreness, timeStamp, userId } = req.body;
+    // Change parameter name from "sleep" to "sleepHours"
+    const { sleepHours, stress, fatigue, muscleSoreness, timeStamp } = req.body;
 
-    // Validate required fields
-    if (sleep === undefined || stress === undefined || fatigue === undefined) {
+    // Validate required fields (update field names)
+    if (sleepHours === undefined || stress === undefined || fatigue === undefined) {
       return res.status(400).json({ 
-        error: 'Missing required fields: sleep, stress, and fatigue are required' 
+        error: 'Missing required fields: sleepHours, stress, and fatigue are required' 
       });
     }
 
-    // Validate numeric values
-    if (isNaN(sleep) || isNaN(stress) || isNaN(fatigue) || 
-        (muscleSoreness !== undefined && isNaN(muscleSoreness))) {
-      return res.status(400).json({ 
-        error: 'All values must be numbers' 
-      });
+    // Update validation ranges to match new scales
+    if (sleepHours < 0 || sleepHours > 24) {
+      return res.status(400).json({ error: 'Sleep hours must be between 0-24' });
+    }
+    if (stress < 0 || stress > 10) {
+      return res.status(400).json({ error: 'Stress must be between 0-10' });
+    }
+    if (fatigue < 0 || fatigue > 10) {
+      return res.status(400).json({ error: 'Fatigue must be between 0-10' });
+    }
+    if (muscleSoreness !== undefined && (muscleSoreness < 0 || muscleSoreness > 10)) {
+      return res.status(400).json({ error: 'Muscle soreness must be between 0-10' });
     }
 
-    // Create wellness entry
+    // Update field names in the create operation
     const wellness = await prisma.wellness.create({
       data: {
-        sleep: Number(sleep),
+        sleepHours: Number(sleepHours),    // Changed from "sleep"
         stress: Number(stress),
         fatigue: Number(fatigue),
         muscleSoreness: muscleSoreness !== undefined ? Number(muscleSoreness) : null,
         timeStamp: timeStamp ? new Date(timeStamp) : new Date(),
-        //userId: userId || null // Can be null if not provided
-      },
-      include: {
-        user: true // Include user data in response if needed
       }
     });
 
@@ -43,35 +45,6 @@ exports.createWellness = async (req, res) => {
 
   } catch (err) {
     console.error('createWellness error:', err);
-    
-    // Handle Prisma errors
-    if (err.code === 'P2003') {
-      return res.status(400).json({ 
-        error: 'Invalid user ID provided' 
-      });
-    }
-    
-    return res.status(500).json({ 
-      error: 'Internal server error' 
-    });
-  }
-};
-
-// Optional: Get all wellness entries
-exports.getAllWellness = async (req, res) => {
-  try {
-    const wellnessEntries = await prisma.wellness.findMany({
-      include: {
-        user: true
-      },
-      orderBy: {
-        timeStamp: 'desc'
-      }
-    });
-    
-    return res.status(200).json(wellnessEntries);
-  } catch (err) {
-    console.error('getAllWellness error:', err);
     return res.status(500).json({ error: 'Internal server error' });
   }
 };
