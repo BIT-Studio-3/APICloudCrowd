@@ -36,7 +36,7 @@ model Wellness {
   sleep           Int
   stress          Int
   fatigue         Int
-  muscleSoreness  Int?
+  muscleSoreness  Int
   timeStamp       DateTime @default(now())
   // Remove the relation fields to avoid breaking User model
   // userId          String?  // Remove this
