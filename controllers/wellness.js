@@ -6,17 +6,17 @@ export const createWellness = async (req, res) => {
     const { sleep, stress, fatigue, muscleSoreness, timeStamp, userId } = req.body;
 
     // Validate required fields
-    if (sleep === undefined || stress === undefined || 
-        fatigue === undefined || muscleSoreness === undefined) {
-      return res.status(400).json({ 
-        error: 'Missing required fields: sleep, stress, fatigue, and muscleSoreness are required' 
+    if (sleep === undefined || stress === undefined ||
+      fatigue === undefined || muscleSoreness === undefined) {
+      return res.status(400).json({
+        error: 'Missing required fields: sleep, stress, fatigue, and muscleSoreness are required'
       });
     }
 
     // Validate numeric values
     if (isNaN(sleep) || isNaN(stress) || isNaN(fatigue) || isNaN(muscleSoreness)) {
-      return res.status(400).json({ 
-        error: 'All values must be numbers' 
+      return res.status(400).json({
+        error: 'All values must be numbers'
       });
     }
 
@@ -38,16 +38,16 @@ export const createWellness = async (req, res) => {
 
   } catch (err) {
     console.error('createWellness error:', err);
-    
+
     // Handle Prisma validation errors
     if (err.code === 'P2002') {
-      return res.status(400).json({ 
-        error: 'Validation error' 
+      return res.status(400).json({
+        error: 'Validation error'
       });
     }
-    
-    return res.status(500).json({ 
-      error: 'Internal server error' 
+
+    return res.status(500).json({
+      error: 'Internal server error'
     });
   }
 };
@@ -60,7 +60,7 @@ export const getAllWellness = async (req, res) => {
         timeStamp: 'desc'
       }
     });
-    
+
     return res.status(200).json(wellnessEntries);
   } catch (err) {
     console.error('getAllWellness error:', err);
