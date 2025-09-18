@@ -5,11 +5,9 @@ import cors from "cors";
 // Import the routes modules
 import userRoutes from "./routes/user.js";
 import authRoutes from "./routes/auth.js";
-
+import wellnessRoutes from "./routes/wellness.js";
 // Create an Express application
 const app = express();
-
-const wellnessRoutes = require('./routes/wellness');
 
 // Use the PORT environment variable or 3000
 const PORT = process.env.PORT || 3000;
