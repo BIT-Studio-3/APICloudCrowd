@@ -7,9 +7,10 @@ export const createWellness = async (req, res) => {
 
     // Validate required fields
     if (sleep === undefined || stress === undefined ||
-      fatigue === undefined || muscleSoreness === undefined) {
+      fatigue === undefined || muscleSoreness === undefined ||
+      userId === undefined) {
       return res.status(400).json({
-        error: 'Missing required fields: sleep, stress, fatigue, and muscleSoreness are required'
+        error: 'Missing required fields: sleep, stress, fatigue, muscleSoreness and userId are required'
       });
     }
 
@@ -28,6 +29,7 @@ export const createWellness = async (req, res) => {
         fatigue: Number(fatigue),
         muscleSoreness: Number(muscleSoreness),
         timeStamp: timeStamp ? new Date(timeStamp) : new Date(),
+         userId: userId,
       },
     });
 
@@ -43,6 +45,12 @@ export const createWellness = async (req, res) => {
     if (err.code === 'P2002') {
       return res.status(400).json({
         error: 'Validation error'
+      });
+    }else  // P2003: Foreign key constraint failed (e.g., userId does not exist)
+    if (err.code === 'P2003') {
+      // This addresses your requirement to "reply user is not available"
+      return res.status(404).json({
+        error: 'User not available. Invalid userId.'
       });
     }
 
