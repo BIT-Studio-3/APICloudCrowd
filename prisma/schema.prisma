@@ -29,6 +29,9 @@ model User {
   phoneNumber     String?     @unique
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
+
+   //THIS LINE to define the inverse relationship
+  wellnessEntries Wellness[] // A User can have many Wellness entries
 }
 
 model Wellness {
@@ -38,7 +41,7 @@ model Wellness {
   fatigue         Int
   muscleSoreness  Int
   timeStamp       DateTime @default(now())
-  // Remove the relation fields to avoid breaking User model
-  // userId          String?  // Remove this
-  // user            User?    // Remove this
+  userId          String
+  user            User        @relation(fields: [userId], references: [id])
+
 }
