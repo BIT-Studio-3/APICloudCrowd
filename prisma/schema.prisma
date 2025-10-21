@@ -27,6 +27,7 @@ model User {
   password        String
   role            Role        @default(NORMAL)
   phoneNumber     String?     @unique
+  injuries        Injury[]
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
 }
@@ -41,4 +42,15 @@ model Wellness {
   // Remove the relation fields to avoid breaking User model
   // userId          String?  // Remove this
   // user            User?    // Remove this
+}
+
+model Injury {
+  id              String    @id @default(uuid())
+  userID          String
+  user            User      @relation(fields: [userID], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  description     String
+  circumstances   String
+  timeInjury      DateTime
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
 }
