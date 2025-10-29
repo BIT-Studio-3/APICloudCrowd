@@ -1,3 +1,4 @@
+
 import prisma from '../prisma/client.js';
 
 export const createWellness = async (req, res) => {
@@ -7,9 +8,10 @@ export const createWellness = async (req, res) => {
 
     // Validate required fields
     if (sleep === undefined || stress === undefined ||
-      fatigue === undefined || muscleSoreness === undefined) {
+      fatigue === undefined || muscleSoreness === undefined ||
+      userId === undefined) {
       return res.status(400).json({
-        error: 'Missing required fields: sleep, stress, fatigue, and muscleSoreness are required'
+        error: 'Missing required fields: sleep, stress, fatigue, muscleSoreness and userId are required'
       });
     }
 
@@ -28,6 +30,7 @@ export const createWellness = async (req, res) => {
         fatigue: Number(fatigue),
         muscleSoreness: Number(muscleSoreness),
         timeStamp: timeStamp ? new Date(timeStamp) : new Date(),
+        userId: userId,
       },
     });
 
@@ -44,7 +47,13 @@ export const createWellness = async (req, res) => {
       return res.status(400).json({
         error: 'Validation error'
       });
-    }
+    } else  // P2003: Foreign key constraint failed (e.g., userId does not exist)
+      if (err.code === 'P2003') {
+        // This addresses your requirement to "reply user is not available"
+        return res.status(404).json({
+          error: 'User not available. Invalid userId.'
+        });
+      }
 
     return res.status(500).json({
       error: 'Internal server error'
@@ -52,16 +61,22 @@ export const createWellness = async (req, res) => {
   }
 };
 
-// Optional: Get all wellness entries
-export const getAllWellness = async (req, res) => {
+export const getWellnessDataByUserId = async (req, res) => {
   try {
-    const wellnessEntries = await prisma.wellness.findMany({
+    const { userId } = req.params;
+
+    // Fetches ALL records for the user, ordered chronologically.
+    const wellnessData = await prisma.wellness.findMany({
+      where: {
+        userId: userId,
+      },
       orderBy: {
-        timeStamp: 'desc'
-      }
+        timeStamp: 'asc', // Orders data from oldest to newest for the chart's x-axis
+      },
     });
 
-    return res.status(200).json(wellnessEntries);
+    // Returns an empty array if no data is found (status 200)
+    res.status(200).json(wellnessData || []);
   } catch (err) {
     console.error('getAllWellness error:', err);
     return res.status(500).json({ error: 'Internal server error' });
