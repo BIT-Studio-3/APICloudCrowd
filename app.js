@@ -12,9 +12,9 @@ const app = express();
 // Use the PORT environment variable or 3000
 const PORT = process.env.PORT || 3000;
 
-app.use(cors()); // So the website localhost port has access to make req and res to our API port
 app.use(express.urlencoded({ extended: false })); // To parse the incoming requests with urlencoded payloads. For example, form data
 app.use(express.json()); // To parse the incoming requests with JSON payloads. For example, REST API requests
+app.use(cors()); // So the website localhost port has access to make req and res to our API port
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
