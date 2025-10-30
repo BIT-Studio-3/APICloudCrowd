@@ -73,13 +73,13 @@ const login = async (req, res) => {
       where: { emailAddress },
     });
     if (!user) {
-      return res.status(400).json({ message: "Invalid email address" });
+      return res.status(401).json({ message: "Invalid email address" });
     }
 
     // Compare the provided password with the hashed password in the database
     const isPassword = await bcryptjs.compare(password, user.password);
     if (!isPassword) {
-      return res.status(400).json({ message: "Invalid password" });
+      return res.status(401).json({ message: "Invalid password" });
     }
 
     const { JWT_SECRET, JWT_LIFETIME } = process.env;
@@ -98,7 +98,7 @@ const login = async (req, res) => {
       message: err.message,
     });
   } catch (err) {
-    return res.status(500)({
+    return res.status(500).json({
       message: err.message,
     });
   }
